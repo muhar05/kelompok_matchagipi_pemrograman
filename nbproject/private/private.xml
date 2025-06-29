@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/FormLogin.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/Member.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/dao/UserDao.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/HalamanUtama.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/model/Buku.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/AdminBuku.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/Staff.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/dao/BukuDao.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/AdminPengembalian.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/AdminUser.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/StaffBuku.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/AdminKategori.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/FormRegister.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/MemberRiwayatPeminjaman.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/dao/KategoriDao.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/StaffKategori.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/StaffPeminjaman.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/icon/password.svg</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/DatabaseConnection.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/dao/PeminjamanDao.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/model/User.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/Matchagipi.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/MemberPeminjaman.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/StaffPengembalian.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/model/Kategori.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/Admin.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/AdminPeminjaman.java</file>
+            <file>file:/E:/Pemrograman_1/matchagipi/src/matchagipi/dao/PengembalianDao.java</file>
+        </group>
+    </open-files>
+</project-private>
