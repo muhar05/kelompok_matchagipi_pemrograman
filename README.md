@@ -1,72 +1,75 @@
-📚 Matchagipi - Sistem Manajemen Perpustakaan
-Matchagipi adalah aplikasi desktop berbasis Java untuk mengelola sistem perpustakaan, termasuk manajemen user, buku, peminjaman, pengembalian, dan pelaporan. Dibuat menggunakan Java Swing dengan NetBeans GUI Builder.
+📚 Matchagipi - Sistem Manajemen Perpustakaan Digital
+Matchagipi adalah aplikasi desktop berbasis Java yang dirancang untuk membantu pengelolaan perpustakaan secara digital. Dibangun menggunakan Java Swing dan NetBeans GUI Builder, sistem ini mendukung berbagai fitur seperti manajemen pengguna, katalog buku, transaksi peminjaman-pengembalian, hingga laporan aktivitas perpustakaan.
+
+✨ Fitur Utama Berdasarkan Role
+🔐 Login & Autentikasi
+Form login untuk semua pengguna (Admin, Staff, Member)
+Sistem autentikasi dan validasi user
+Registrasi user baru (oleh Admin atau melalui form)
+
+🧑‍💼 Admin
+Manajemen akun Staff & Member
+CRUD buku dan kategori buku
+Mengelola transaksi peminjaman & pengembalian
+
+👨‍💼 Staff
+CRUD data buku dan kategori
+Memproses peminjaman & pengembalian buku
+Melihat data pengguna & transaksi
+
+👨‍🎓 Member
+Melihat katalog buku
+Melakukan peminjaman buku
+Melihat status pinjaman & histori pengembalian
 
 🏗️ Struktur Proyek
-graphql
+bash
 Copy
 Edit
 matchagipi/
 ├── src/
-│   ├── model/            # Kelas model data (User, Buku, Peminjaman, dll)
-│   ├── controller/       # Logika bisnis dan pengelolaan data
-│   ├── view/             # GUI berbasis Java Swing
-│   └── main/             # Kelas utama dan entry point aplikasi
-├── database/             # File SQL dan konfigurasi database
+│   ├── model/            # Model data seperti User, Buku, Peminjaman
+│   ├── controller/       # Logika bisnis dan penghubung ke database
+│   ├── view/             # Antarmuka pengguna dengan Java Swing
+│   └── main/             # Entry point aplikasi
+├── database/             # File SQL & konfigurasi awal database
 ├── README.md
-└── matchagipi.sql        # Skrip database untuk inisialisasi sistem
+└── matchagipi.sql        # Skrip untuk inisialisasi database
+⚙️ Cara Menjalankan Aplikasi
 
-👤 Fitur Utama Berdasarkan Role
-🔐 Login & Autentikasi
-Form login untuk semua pengguna
+📋 Kebutuhan Sistem
+Java JDK 11 atau lebih baru
+NetBeans IDE (disarankan versi terbaru)
+MySQL Server aktif
+Koneksi JDBC
+FlatLaf dan JSVG (jika digunakan untuk tampilan modern)
 
-Registrasi user baru (via Admin atau Register Form)
-
-🧑‍💼 Admin
-Manajemen user
-
-Manajemen buku dan kategori
-
-Pengelolaan peminjaman & pengembalian
-
-Pembuatan laporan kegiatan
-
-👨‍💼 Staff
-Pengelolaan data buku dan kategori
-
-Peminjaman dan pengembalian buku oleh member
-
-👨‍🎓 Member
-Melihat buku
-
-Melakukan peminjaman buku
-
-Melihat riwayat peminjaman
-
-⚙️ Cara Menjalankan
-Kebutuhan Sistem
-
-JDK 11 atau lebih tinggi
-
-NetBeans IDE (disarankan)
-
-MySQL (pastikan database tersedia)
-
-Library tambahan seperti FlatLaf & JSVG jika digunakan
-
-Langkah Setup
-
-Clone repositori ini atau buka di NetBeans
-
-Atur koneksi database di DatabaseConnection.java
-
-Buat database dan tabel sesuai kebutuhan
-
-Jalankan Matchagipi.java
+🚀 Langkah Setup
+Clone repositori ini atau download sebagai ZIP.
+Buka proyek di NetBeans IDE.
+Buat database MySQL baru dan import matchagipi.sql.
+Konfigurasi file DatabaseConnection.java sesuai koneksi lokal Anda (user, password, db name).
+Jalankan program melalui file Matchagipi.java.
 
 🛠️ Dependensi Tambahan
-FlatLaf – untuk tampilan UI modern
+FlatLaf – untuk UI modern & flat design
+JSVG – untuk menampilkan ikon SVG
+Tambahkan JAR dependensi ke dalam library proyek via NetBeans.
 
-JSVG – untuk render ikon SVG
+📈 Pengembangan Selanjutnya (Saran)
+Modul notifikasi keterlambatan via email
+Fitur denda otomatis
+Integrasi QR Code untuk scan buku
+Ekspor laporan ke PDF
 
-📝 Lisensi
-Proyek ini bersifat open-source dan bebas digunakan untuk keperluan belajar dan pengembangan lebih lanjut.
+📄 Lisensi
+Proyek ini bersifat Open Source dan bebas digunakan untuk keperluan pembelajaran, penelitian, maupun pengembangan aplikasi skala kecil-menengah. Kontribusi sangat terbuka untuk perbaikan dan pengembangan fitur lebih lanjut.
+
+🙌 Kontribusi
+Ingin berkontribusi? Silakan:
+Fork repositori ini
+Buat perubahan di branch baru
+Kirim pull request dengan deskripsi yang jelas
+
+Dibuat dengan 💻 oleh tim pengembang Matchagipi
+Aplikasi sederhana, bermanfaat nyata untuk pengelolaan perpustakaan modern
