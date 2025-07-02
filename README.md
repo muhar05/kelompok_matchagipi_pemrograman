@@ -29,6 +29,7 @@
 
 ## 🏗️ Struktur Proyek
 
+```text
 matchagipi/
 ├── src/
 │   ├── matchagipi/
@@ -63,8 +64,7 @@ matchagipi/
 │   └── jcalendar-1.4.jar
 ├── JDK 24 (Default)
 └── README.md (optional)
-
----
+```
 
 ## ⚙️ Cara Menjalankan
 
