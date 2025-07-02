@@ -31,17 +31,38 @@
 
 matchagipi/
 ├── src/
-│ ├── model/
-│ ├── controller/
-│ ├── view/
-│ └── main/
-├── database/
-├── matchagipi.sql
-└── README.md
-
-yaml
-Copy
-Edit
+│   ├── matchagipi/
+│   │   ├── Admin.java
+│   │   ├── AdminBuku.java
+│   │   ├── AdminKategori.java
+│   │   ├── AdminPeminjaman.java
+│   │   ├── AdminPengembalian.java
+│   │   ├── AdminUser.java
+│   │   ├── DatabaseConnection.java
+│   │   ├── FormLogin.java
+│   │   ├── FormRegister.java
+│   │   ├── HalamanUtama.java
+│   │   ├── Matchagipi.java
+│   │   ├── Member.java
+│   │   ├── MemberPeminjaman.java
+│   │   ├── MemberRiwayatPeminjaman.java
+│   │   ├── Staff.java
+│   │   ├── StaffBuku.java
+│   │   ├── StaffKategori.java
+│   │   ├── StaffPeminjaman.java
+│   │   └── StaffPengembalian.java
+│   ├── matchagipi.dao/
+│   ├── matchagipi.icon/
+│   └── matchagipi.model/
+├── Libraries/
+│   ├── flatlaf-3.2.1.jar
+│   ├── flatlaf-extras-3.2.5.jar
+│   ├── datechooser.jar
+│   ├── mysql-connector-j-9.0.0.jar
+│   ├── jsvg-1.3.0.jar
+│   └── jcalendar-1.4.jar
+├── JDK 24 (Default)
+└── README.md (optional)
 
 ---
 
