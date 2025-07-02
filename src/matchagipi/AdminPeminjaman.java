@@ -6,19 +6,95 @@
 
 package matchagipi;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import matchagipi.dao.PeminjamanDao;
+
 /**
  *
  * @author FERDY
  */
 public class AdminPeminjaman extends javax.swing.JFrame {
-
+    private DefaultTableModel tableModel;
+    private PeminjamanDao peminjamanDao = new PeminjamanDao(); // pastikan sudah buat class ini
+    private List<String> listUserIds = new ArrayList<>();
+    private List<String> listBukuIds = new ArrayList<>();
     /**
      * Creates new form AdminPeminjaman
      */
     public AdminPeminjaman() {
         initComponents();
         setLocationRelativeTo(null);
+          // Inisialisasi model tabel
+    tableModel = new DefaultTableModel(
+            new String[]{"ID Peminjaman", "Nama User", "Judul Buku", "Tanggal Pinjam", "Tanggal Kembali", "Status"}, 0
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 3 || column == 4 || column == 5;
+            }
+        };
+
+        tablePeminjaman.setModel(tableModel);
+        loadDataPeminjaman();
+
     }
+    
+    private void loadDataPeminjaman() {
+    tableModel.setRowCount(0); // Hapus data lama
+    listUserIds.clear();
+    listBukuIds.clear();
+
+    try {
+        Connection conn = DatabaseConnection.getConnection();
+        String sql = "SELECT p.id_peminjaman, u.id_user, u.nama_lengkap AS nama_user, b.id_buku, b.judul_buku, " +
+                     "p.tanggal_pinjam, p.tanggal_kembali, p.status " +
+                     "FROM peminjaman p " +
+                     "JOIN users u ON p.id_user = u.id_user " +
+                     "JOIN buku b ON p.id_buku = b.id_buku";
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            String idUser = rs.getString("id_user");
+            String idBuku = rs.getString("id_buku");
+            listUserIds.add(idUser);
+            listBukuIds.add(idBuku);
+
+            Object[] row = new Object[]{
+                rs.getString("id_peminjaman"),
+                rs.getString("nama_user"),
+                rs.getString("judul_buku"),
+                rs.getDate("tanggal_pinjam"),
+                rs.getDate("tanggal_kembali"),
+                rs.getString("status")
+            };
+            tableModel.addRow(row);
+        }
+
+        rs.close();
+        ps.close();
+        conn.close();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+    
+    private boolean isValidDate(String dateStr) {
+    try {
+        java.time.LocalDate.parse(dateStr);
+        return true;
+    } catch (Exception e) {
+        return false;
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -33,13 +109,10 @@ public class AdminPeminjaman extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        buttonHapus = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton4 = new javax.swing.JButton();
+        tablePeminjaman = new javax.swing.JTable();
+        buttonSimpan = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -81,25 +154,15 @@ public class AdminPeminjaman extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(185, 212, 170));
 
-        jButton2.setText("Edit");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        buttonHapus.setBackground(new java.awt.Color(250, 255, 202));
+        buttonHapus.setText("Hapus");
+        buttonHapus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                buttonHapusActionPerformed(evt);
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(250, 255, 202));
-        jButton3.setText("Hapus");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jLabel3.setText("ID Peminjaman");
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablePeminjaman.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -110,9 +173,14 @@ public class AdminPeminjaman extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablePeminjaman);
 
-        jButton4.setText("Cari");
+        buttonSimpan.setText("Simpan");
+        buttonSimpan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSimpanActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -121,34 +189,23 @@ public class AdminPeminjaman extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(48, 48, 48)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 699, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(39, Short.MAX_VALUE))
+                        .addComponent(buttonHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(290, 290, 290)
+                        .addComponent(buttonSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
-                .addGap(18, 18, 18)
+                .addGap(28, 28, 28)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22))
+                    .addComponent(buttonHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -156,7 +213,7 @@ public class AdminPeminjaman extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,13 +227,27 @@ public class AdminPeminjaman extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void buttonHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonHapusActionPerformed
+        int selectedRow = tablePeminjaman.getSelectedRow();
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Pilih baris yang ingin dihapus");
+        return;
+    }
+
+    String id = tableModel.getValueAt(selectedRow, 0).toString();
+
+    int confirm = JOptionPane.showConfirmDialog(this, "Yakin ingin menghapus data ID " + id + "?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+    if (confirm == JOptionPane.YES_OPTION) {
+        boolean success = peminjamanDao.deletePeminjaman(id);
+        if (success) {
+            JOptionPane.showMessageDialog(this, "Data berhasil dihapus");
+            loadDataPeminjaman();
+        } else {
+            JOptionPane.showMessageDialog(this, "Gagal menghapus data");
+        }
+    }
+    }//GEN-LAST:event_buttonHapusActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -186,6 +257,49 @@ public class AdminPeminjaman extends javax.swing.JFrame {
         admin.setVisible(true);
         admin.setLocationRelativeTo(null); // Tampilkan di tengah layar
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void buttonSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSimpanActionPerformed
+        int selectedRow = tablePeminjaman.getSelectedRow();
+
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Tidak ada baris yang dipilih.");
+        return;
+    }
+
+    String idPeminjaman = tableModel.getValueAt(selectedRow, 0).toString();
+    String idUser = listUserIds.get(selectedRow);
+    String idBuku = listBukuIds.get(selectedRow);
+    String tglPinjam = tableModel.getValueAt(selectedRow, 3).toString();
+    String tglKembali = tableModel.getValueAt(selectedRow, 4).toString();
+    String status = tableModel.getValueAt(selectedRow, 5).toString();
+
+    // Validasi tanggal
+    if (!isValidDate(tglPinjam) || !isValidDate(tglKembali)) {
+        JOptionPane.showMessageDialog(this, "Format tanggal harus YYYY-MM-DD");
+        return;
+    }
+
+    // Validasi status
+    if (!status.equalsIgnoreCase("dipinjam") && !status.equalsIgnoreCase("dikembalikan")) {
+        JOptionPane.showMessageDialog(this, "Status hanya boleh 'dipinjam' atau 'dikembalikan'");
+        return;
+    }
+
+    boolean success = peminjamanDao.updatePeminjaman(
+        idPeminjaman, idUser, idBuku,
+        java.sql.Date.valueOf(tglPinjam),
+        java.sql.Date.valueOf(tglKembali),
+        status.toLowerCase()
+    );
+
+    if (success) {
+        JOptionPane.showMessageDialog(this, "Data berhasil diupdate");
+        loadDataPeminjaman();
+    } else {
+        JOptionPane.showMessageDialog(this, "Gagal mengupdate data");
+    }
+     loadDataPeminjaman();
+    }//GEN-LAST:event_buttonSimpanActionPerformed
 
     /**
      * @param args the command line arguments
@@ -223,16 +337,13 @@ public class AdminPeminjaman extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonHapus;
+    private javax.swing.JButton buttonSimpan;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTable tablePeminjaman;
     // End of variables declaration//GEN-END:variables
 }
